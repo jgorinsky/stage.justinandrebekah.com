@@ -1,202 +1,405 @@
-	
-	'use strict';	
-	
-	// CHECK WINDOW RESIZE
-	var is_windowresize = false;
-	$(window).resize(function(){
-		is_windowresize = true;
+
+'use strict';
+
+var restaurantData = [
+	{
+		name: "Balkan Treat Box",
+		icon: "de-icon-food",
+		color: "#f6700e",
+		loc: [38.59223913678226, -90.33781505784111]
+	},
+	{
+		name: "Carl's Deli",
+		icon: "de-icon-food",
+		color: "#0d9a48",
+		loc: [38.634312272455595, -90.30984033085689]
+	},
+	{
+		name: "Carl's Drive In",
+		icon: "de-icon-food",
+		color: "#f0394d",
+		loc: [38.612806645982246, -90.35435755784054]
+	},
+	{
+		name: "Cate Zone",
+		icon: "de-icon-food",
+		color: "#402ea88c",
+		loc: [38.67345830028008, -90.34730017318347]
+	},
+	{
+		name: "Clementine's Creamery",
+		icon: "de-icon-food",
+		color: "#ff00bf",
+		loc: [38.63933203531043, -90.308094623246]
+	},
+	{
+		name: "Crown Candy Kitchen",
+		icon: "de-icon-food",
+		color: "#008521",
+		loc: [38.65152999184415, -90.19793791736488]
+	},
+	{
+		name: "Donut Drive-In",
+		icon: "de-icon-food",
+		color: "#fcb900",
+		loc: [38.59231992241366, -90.3028939615473]
+	},
+	{
+		name: "Gioia's Deli",
+		icon: "de-icon-food",
+		color: "#00ffff",
+		loc: [38.62177245967816, -90.2776399505507]
+	},
+	{
+		name: "The Lucky Accomplice",
+		icon: "de-icon-food",
+		color: "#000d80",
+		loc: [38.60639519728356, -90.22279740624774]
+	},
+	{
+		name: "Mai Lee",
+		icon: "de-icon-food",
+		color: "#ff13d8",
+		loc: [38.627650848097, -90.3374570866763]
+	},
+	{
+		name: "Nudo House",
+		icon: "de-icon-food",
+		color: "#03e950",
+		loc: [38.658852901250576, -90.29527338634078]
+	},
+	{
+		name: "Pastaria",
+		icon: "de-icon-food",
+		color: "#01f0a8",
+		loc: [38.6500844536812, -90.33594665969254]
+	},
+	{
+		name: "Planter's House",
+		icon: "de-icon-food",
+		color: "#a30000",
+		loc: [38.62084546241626, -90.2120577443488]
+	},
+	{
+		name: "Salt + Smoke",
+		icon: "de-icon-food",
+		color: "#ffa600",
+		loc: [38.6518323506355, -90.26182072207367]
+	},
+	{
+		name: "Sauce on the Side",
+		icon: "de-icon-food",
+		color: "#88008d",
+		loc: [38.63023501351425, -90.25735755268029]
+	},
+	{
+		name: "Ted Drewes",
+		icon: "de-icon-food",
+		color: "#1800f3",
+		loc: [38.59145909910877, -90.30748270162887]
+	},
+	{
+		name: "Union Loafers",
+		icon: "de-icon-food",
+		color: "#19d408",
+		loc: [38.61997101172702, -90.25596673085727]
+	}
+]
+
+var poiData = [
+	{
+		name: "Busch Stadium",
+		icon: "de-icon-flag-1",
+		color: "#f6160e",
+		loc: [38.62276127622307, -90.19281017318491]
+	},
+	{
+		name: "City Garden",
+		icon: "de-icon-tree",
+		color: "#0d9a48",
+		loc: [38.62811202799459, -90.19367972851843]
+	},
+	{
+		name: "City Museum",
+		icon: "de-icon-infinity",
+		color: "#393cf0",
+		loc: [38.633867239350266, -90.20065468667615]
+	},
+	{
+		name: "Gateway Arch",
+		icon: "de-icon-info-2",
+		color: "#525252",
+		loc: [38.624783965215215, -90.18477978463582]
+	},
+	{
+		name: "Missouri Botanical Garden",
+		icon: "de-icon-leaf-2",
+		color: "#d458c0",
+		loc: [38.61294322897561, -90.25939053085746]
+	},
+	{
+		name: "Missouri History Museum",
+		icon: "de-icon-book-1",
+		color: "#f0b039",
+		loc: [38.648030250763206, -90.28615949673473]
+	},
+	{
+		name: "Saint Louis Art Museum",
+		icon: " de-icon-brush",
+		color: "#0edbf6",
+		loc: [38.639465403443396, -90.29446964434827]
+	},
+	{
+		name: "Saint Louis Zoo",
+		icon: "de-icon-linux",
+		color: "#333",
+		loc: [38.63421948226387, -90.29217827481338]
+	},
+	{
+		name: "Tower Grove Farmer's Market",
+		loc: [38.606952611704834, -90.26027753085764],
+		icon: "de-icon-leaf",
+		color: "#165e1c"
+	},
+	{
+		name: "The Cathedral Basilica of St. Louis",
+		loc: [38.64267913581317, -90.25468968667585],
+		icon: "de-icon-bell-alt",
+		color: "#341192"
+	},
+	{
+		name: "STL Style House",
+		loc: [38.59889538111648, -90.2377048676665],
+		icon: "de-icon-bag",
+		color: "#ff1717"
+	},
+	{
+		name: "The Future Antiques",
+		loc: [38.59203846535419, -90.30217885413504],
+		icon: "de-icon-glasses",
+		color: "#555400"
+	},
+	{
+		name: "Union Studio",
+		loc: [38.62041235796895, -90.25590423085725],
+		icon: "de-icon-gift-2",
+		color: "#120ef6"
+	},
+	{
+		name: "Parker's Table",
+		loc: [38.633084746205014, -90.30846416206622],
+		icon: "de-icon-basket-1",
+		color: "#0d9a6b"
+	}
+]
+
+var eventData = [
+	{
+		name: "Ceremony/Reception",
+		icon: "de-icon-bell-1",
+		color: "#f0394d",
+		loc: [38.63570209859459, -90.29057367011644]
+	},
+	{
+		name: "Parking Lot",
+		icon: "de-icon-cab",
+		color: "#0d9a48",
+		loc: [38.633218285400375, -90.2912130927869]
+	},
+	{
+		name: "Accessible Drop-Off",
+		icon: "de-icon-wheelchair",
+		color: "#0d4a9a",
+		loc: [38.63360604311911, -90.29115346681569]
+	}
+]
+
+// CHECK WINDOW RESIZE
+var is_windowresize = false;
+$(window).resize(function () {
+	is_windowresize = true;
+});
+
+
+//INITIALIZE MAP
+function initialize() {
+
+	//DEFINE MAP OPTIONS
+	//=======================================================================================
+	var mapOptions = {
+		zoom: 12,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		center: new google.maps.LatLng(38.63606267183039, -90.29204233386525),
+		panControl: true,
+		zoomControl: true,
+		mapTypeControl: false,
+		//scaleControl: false,
+		streetViewControl: true,
+		overviewMapControl: true,
+		//rotateControl:true,
+
+	};
+
+	//CREATE NEW MAP
+	//=======================================================================================
+	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+	mapOptions.center = new google.maps.LatLng(38.6166104186062, -90.23929274614613);
+	mapOptions.zoom = 13;
+	var poiMap = new google.maps.Map(document.getElementById('poi-map-canvas'), mapOptions);
+
+	mapOptions.zoom = 17;
+	mapOptions.center = new google.maps.LatLng(38.63449254878442, -90.29089612339787);
+	// mapOptions.mapTypeId = google.maps.MapTypeId.SATELLITE;
+	var whenWhereMap = new google.maps.Map(document.getElementById('where-map-canvas'), mapOptions);
+
+	//MARKER ICON
+	//=======================================================================================
+	//var image = 'facebook30.svg';
+
+	//ADD NEW MARKER
+	//=======================================================================================
+	/*var marker = new google.maps.Marker({
+	position: map.getCenter(),
+			  map: map,
+	title: 'Click to zoom',
+	icon: image
 	});
 	
-	
-	//INITIALIZE MAP
-	function initialize() {
-		
-		//DEFINE MAP OPTIONS
-		//=======================================================================================
-  		var mapOptions = {
-    		zoom: 18,		
-			mapTypeId: google.maps.MapTypeId.ROADMAP,	
-    		center: new google.maps.LatLng(-12.046014, -77.030503),
-			panControl: true,
-  			zoomControl: true,
-  			mapTypeControl: true,
-  			//scaleControl: false,
-  			streetViewControl: true,
-  			overviewMapControl: true,
-			//rotateControl:true,
-			
-  		};
+var marker1 = new google.maps.Marker({
+	position: new google.maps.LatLng(-12.042559, -77.027426),
+			  map: map,
+	title: 'Click to zoom'
+	});*/
 
-		//CREATE NEW MAP
-		//=======================================================================================
-  		var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-		
-		//MARKER ICON
-		//=======================================================================================
-		//var image = 'facebook30.svg';
-		
-		//ADD NEW MARKER
-		//=======================================================================================
-  		/*var marker = new google.maps.Marker({
-    		position: map.getCenter(),
-   		 	map: map,
-    		title: 'Click to zoom',
-			icon: image
-  		});
-		
-		var marker1 = new google.maps.Marker({
-    		position: new google.maps.LatLng(-12.042559, -77.027426),
-   		 	map: map,
-    		title: 'Click to zoom'
-  		});*/
-		
-		
-		//ADD NEW MARKER WITH LABEL
-		//=======================================================================================
-		var marker1 = new MarkerWithLabel({
-       		position: new google.maps.LatLng(-12.046014, -77.030503),
-       		draggable: false,
-       		raiseOnDrag: false,
-       		icon: ' ',
-       		map: map, 
-         	labelContent: '<div class="de-icon circle medium-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="de-icon-heart" style="color:#f0394d"></i></div>',
-       		labelAnchor: new google.maps.Point(29, 20),
-       		labelClass: "labels" // the CSS class for the label
-     		});
-    
-		var marker2 = new MarkerWithLabel({
-       		position: new google.maps.LatLng(-12.046040, -77.029269),
-       		draggable: false,
-       		raiseOnDrag: false,
-       		icon: ' ',
-       		map: map, 
-         	labelContent: '<div class="de-icon circle small-size" style="background-color:#6a6a6a"><i class="de-icon-taxi"></i></div>',
-       		labelAnchor: new google.maps.Point(0, 0),
-       		labelClass: "labels" // the CSS class for the label
-     		});
-			
-		var marker3 = new MarkerWithLabel({
-       		position: new google.maps.LatLng(-12.045909, -77.031712),
-       		draggable: false,
-       		raiseOnDrag: false,
-       		icon: ' ',
-       		map: map, 
-         	labelContent: '<div class="de-icon circle small-size" style="background-color:#67a80e"><i class="de-icon-food"></i></div>',
-       		labelAnchor: new google.maps.Point(0, 0),
-       		labelClass: "labels" // the CSS class for the label
-     		});
-			
-		var marker4 = new MarkerWithLabel({
-       		position: new google.maps.LatLng(-12.046617, -77.030567	),
-       		draggable: false,
-       		raiseOnDrag: false,
-       		icon: ' ',
-       		map: map, 
-         	labelContent: '<div class="de-icon circle small-size" style="background-color:#c89d1b"><i class="de-icon-coffee"></i></div>',
-       		labelAnchor: new google.maps.Point(0, 0),
-       		labelClass: "labels" // the CSS class for the label
-     		});
-			
-		var marker5 = new MarkerWithLabel({
-       		position: new google.maps.LatLng(-12.045857, -77.032538),
-       		draggable: false,
-       		raiseOnDrag: false,
-       		icon: ' ',
-       		map: map, 
-         	labelContent: '<div class="de-icon circle small-size" style="background-color:#f0394d"><i class="de-icon-basket"></i></div>',
-       		labelAnchor: new google.maps.Point(0, 0),
-       		labelClass: "labels" // the CSS class for the label
-     		});	
-		
-		var marker6 = new MarkerWithLabel({
-       		position: new google.maps.LatLng(-12.046053, -77.028732),
-       		draggable: false,
-       		raiseOnDrag: false,
-       		icon: ' ',
-       		map: map, 
-         	labelContent: '<div class="de-icon circle small-size" style="background-color:#f6700e"><i class="de-icon-paper-plane"></i></div>',
-       		labelAnchor: new google.maps.Point(0, 0),
-       		labelClass: "labels" // the CSS class for the label
-     		});	
-			
-		var marker7 = new MarkerWithLabel({
-       		position: new google.maps.LatLng(-12.045363, -77.029939),
-       		draggable: false,
-       		raiseOnDrag: false,
-       		icon: ' ',
-       		map: map, 
-         	labelContent: '<div class="de-icon circle small-size" style="background-color:#0d9a48"><i class="de-icon-tree"></i></div>',
-       		labelAnchor: new google.maps.Point(0, 0),
-       		labelClass: "labels" // the CSS class for the label
-     		});			
-    	//marker.setMap( map );
-		
-		
-		//INFO WINDOWS
-		//=======================================================================================
-		var contentString = '<div>'+
-		'WEDDING CEREMONY';
-      	'</div>';
-		
-		var contentString1 = '<div>'+
-		'WEDDING PARTY';
-      	'</div>';
 
- 	 	var infowindow = new google.maps.InfoWindow({
-      		content: contentString
-  		});
-		
-		var infowindow1 = new google.maps.InfoWindow({
-      		content: contentString1
-  		});
-		
-		
-		
-		//OPEN INFO WINDOWS ON LOAD
-		//=======================================================================================
-  		infowindow.open(map,marker1);
-		
-		//ON CLICK MARKER, OPEN INFO WINDOWS
-		//=======================================================================================
-		google.maps.event.addListener(marker1, 'click', function() {
-  			infowindow.open(map,marker1);
-  		});
+	//ADD NEW MARKER WITH LABEL
+	//=======================================================================================
 
-		//ON MARKER CLICK EVENTS
-		//=======================================================================================
-  		/*google.maps.event.addListener(marker, 'click', function() {
-   	 		map.setZoom(17);
-    		map.setCenter(marker.getPosition());
-			infowindow.open(map,marker);
-  		});
-		
-		google.maps.event.addListener(marker1, 'click', function() {
-   	 		map.setZoom(17);
-    		map.setCenter(marker.getPosition());
-			infowindow1.open(map,marker1);
-  		});
-		
-		google.maps.event.addListener(marker2, 'click', function() {
-   	 		map.setZoom(17);
-    		map.setCenter(marker.getPosition());
-			infowindow1.open(map,marker2);
-  		});*/
-		
-		//ON BOUND EVENTS AND WINDOW RESIZE
-		//=======================================================================================
-		google.maps.event.addListener(map, 'bounds_changed', function() {  		
-			if (is_windowresize)
-			{
-				//map.setCenter(marker.getPosition());
-				window.setTimeout(function() {
-      				map.panTo(marker1.getPosition());
-    			}, 500);
-			}
-			is_windowresize=false;
+	restaurantData.forEach(function addRestaurantMarkers(r) {
+		var marker = new MarkerWithLabel({
+			position: new google.maps.LatLng(r.loc[0], r.loc[1]),
+			draggable: false,
+			raiseOnDrag: false,
+			icon: ' ',
+			map: map,
+			labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
+			labelAnchor: new google.maps.Point(29, 10),
+			labelClass: "labels" // the CSS class for the label
 		});
-	}
+		var infowindow = new google.maps.InfoWindow({
+			content: r.name
+		});
+		google.maps.event.addListener(marker, 'click', function () {
+			infowindow.open(map, marker);
+		});
+	});
 
-	// LOAD GMAP
-	google.maps.event.addDomListener(window, 'load', initialize);
+	poiData.forEach(function addPoiMarkers(r) {
+		var marker = new MarkerWithLabel({
+			position: new google.maps.LatLng(r.loc[0], r.loc[1]),
+			draggable: false,
+			raiseOnDrag: false,
+			icon: ' ',
+			map: poiMap,
+			labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
+			labelAnchor: new google.maps.Point(29, 10),
+			labelClass: "labels" // the CSS class for the label
+		});
+		var infowindow = new google.maps.InfoWindow({
+			content: r.name
+		});
+		google.maps.event.addListener(marker, 'click', function () {
+			infowindow.open(poiMap, marker);
+		});
+	});
+
+	eventData.forEach(function addEventMarkers(r) {
+		var marker = new MarkerWithLabel({
+			position: new google.maps.LatLng(r.loc[0], r.loc[1]),
+			draggable: false,
+			raiseOnDrag: false,
+			icon: ' ',
+			map: whenWhereMap,
+			labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
+			labelAnchor: new google.maps.Point(29, 10),
+			labelClass: "labels" // the CSS class for the label
+		});
+		var infowindow = new google.maps.InfoWindow({
+			content: r.name
+		});
+		google.maps.event.addListener(marker, 'click', function () {
+			infowindow.open(whenWhereMap, marker);
+		});
+	});
+
+	//marker.setMap( map );
+
+
+	//INFO WINDOWS
+	//=======================================================================================
+	var contentString = '<div>' +
+		'WEDDING CEREMONY';
+	'</div>';
+
+	var contentString1 = '<div>' +
+		'WEDDING PARTY';
+	'</div>';
+
+	var infowindow = new google.maps.InfoWindow({
+		content: contentString
+	});
+
+	var infowindow1 = new google.maps.InfoWindow({
+		content: contentString1
+	});
+
+
+
+	//OPEN INFO WINDOWS ON LOAD
+	//=======================================================================================
+	// infowindow.open(map,marker1);
+
+	//ON CLICK MARKER, OPEN INFO WINDOWS
+	//=======================================================================================
+	// google.maps.event.addListener(marker1, 'click', function() {
+	// 	infowindow.open(map,marker1);
+	// });
+
+	//ON MARKER CLICK EVENTS
+	//=======================================================================================
+	/*google.maps.event.addListener(marker, 'click', function() {
+				map.setZoom(17);
+	map.setCenter(marker.getPosition());
+	infowindow.open(map,marker);
+	});
 	
+google.maps.event.addListener(marker1, 'click', function() {
+				map.setZoom(17);
+	map.setCenter(marker.getPosition());
+	infowindow1.open(map,marker1);
+	});
 	
+google.maps.event.addListener(marker2, 'click', function() {
+				map.setZoom(17);
+	map.setCenter(marker.getPosition());
+	infowindow1.open(map,marker2);
+	});*/
+
+	//ON BOUND EVENTS AND WINDOW RESIZE
+	//=======================================================================================
+	google.maps.event.addListener(map, 'bounds_changed', function () {
+		if (is_windowresize) {
+			//map.setCenter(marker.getPosition());
+			window.setTimeout(function () {
+				map.panTo(marker1.getPosition());
+			}, 500);
+		}
+		is_windowresize = false;
+	});
+}
+
+// LOAD GMAP
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
