@@ -3732,3 +3732,19 @@ img.rental {
 	height: 48px;
 	margin: 10px;
 }
+
+/* ----------------------------------------------*/
+/* Custom			 			 */
+/* ----------------------------------------------*/
+.nodisplay {
+	display: none;
+}
+#st-louis {
+	padding: 120px 0;
+}
+.heart-divider {
+	margin-top: 45px;
+}
+#attribution {
+	padding-top: 25px;
+}
