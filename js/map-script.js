@@ -176,7 +176,7 @@ var poiData = [
 	{
 		name: "The Future Antiques",
 		loc: [38.59203846535419, -90.30217885413504],
-		icon: "de-icon-glasses",
+		icon: "de-icon-bag",
 		color: "#555400"
 	},
 	{
@@ -214,6 +214,69 @@ var eventData = [
 	}
 ]
 
+var breweryData = [
+	{
+		name: "Anheuser – Busch",
+		icon: "de-icon-beer-1",
+		color: "#d8251e",
+		loc: [38.599869292486666, -90.2088764767055]
+	},
+	{
+		name: "Four Hands",
+		icon: "de-icon-beer-1",
+		color: "#0f0d9a",
+		loc: [38.615097891449956, -90.19771882107202]
+	},
+	{
+		name: "Rockwell Beer Co.",
+		icon: "de-icon-beer-1",
+		color: "#f039d1",
+		loc: [38.62577281567227, -90.25130581736558]
+	},
+	{
+		name: "Schlafly Bottleworks",
+		icon: "de-icon-beer-1",
+		color: "#e0a930",
+		loc: [38.6131609112644, -90.31495025784058]
+	},
+	{
+		name: "Schlafly Tap Room",
+		icon: "de-icon-beer-1",
+		color: "#ccd458",
+		loc: [38.63316752707335, -90.20976371736539]
+	},
+	{
+		name: "2nd Shift Brewing",
+		icon: "de-icon-beer-1",
+		color: "#39f0c2",
+		loc: [38.62167177838797, -90.28109065784031]
+	},
+	{
+		name: "Civil Life",
+		icon: "de-icon-beer-1",
+		color: "#6bf60e",
+		loc: [38.590892327920535, -90.25802574805577]
+	},
+	{
+		name: "Sump Coffee",
+		icon: "de-icon-coffee",
+		color: "#333",
+		loc: [38.58795144899533, -90.2262427462028]
+	},
+	{
+		name: "Comet Coffee",
+		icon: "de-icon-coffee",
+		color: "#165e1c",
+		loc: [38.63040352357437, -90.281862430857]
+	},
+	{
+		name: "Blueprint",
+		icon: "de-icon-coffee",
+		color: "#341192",
+		loc: [38.596035299863374, -90.30142161871129]
+	},
+]
+
 // CHECK WINDOW RESIZE
 var is_windowresize = false;
 $(window).resize(function () {
@@ -242,16 +305,35 @@ function initialize() {
 
 	//CREATE NEW MAP
 	//=======================================================================================
-	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	var eventMapCanvas = document.getElementById('map-canvas');
+	if (!!eventMapCanvas) {
+		var eventMap = new google.maps.Map(eventMapCanvas, mapOptions);
+	}
+	
 
 	mapOptions.center = new google.maps.LatLng(38.6166104186062, -90.23929274614613);
 	mapOptions.zoom = 13;
-	var poiMap = new google.maps.Map(document.getElementById('poi-map-canvas'), mapOptions);
+	var poiMapCanvas = document.getElementById('poi-map-canvas');
+	if (!!poiMapCanvas) {
+		var poiMap = new google.maps.Map(poiMapCanvas, mapOptions);
+	}
+
+	mapOptions.center = new google.maps.LatLng(38.6166104186062, -90.23929274614613);
+	mapOptions.zoom = 13;
+	var beerMapCanvas = document.getElementById('beer-map-canvas');
+	if (!!poiMapCanvas) {
+		var beerMap = new google.maps.Map(beerMapCanvas, mapOptions);
+	}
+	
 
 	mapOptions.zoom = 17;
 	mapOptions.center = new google.maps.LatLng(38.63449254878442, -90.29089612339787);
 	// mapOptions.mapTypeId = google.maps.MapTypeId.SATELLITE;
-	var whenWhereMap = new google.maps.Map(document.getElementById('where-map-canvas'), mapOptions);
+	var whenWhereMapCanvas = document.getElementById('where-map-canvas');
+	if (!!whenWhereMapCanvas) {
+		var whenWhereMap = new google.maps.Map(whenWhereMapCanvas, mapOptions);
+	}
+	
 
 	//MARKER ICON
 	//=======================================================================================
@@ -282,7 +364,7 @@ var marker1 = new google.maps.Marker({
 			draggable: false,
 			raiseOnDrag: false,
 			icon: ' ',
-			map: map,
+			map: eventMap,
 			labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
 			labelAnchor: new google.maps.Point(29, 10),
 			labelClass: "labels" // the CSS class for the label
@@ -291,7 +373,26 @@ var marker1 = new google.maps.Marker({
 			content: r.name
 		});
 		google.maps.event.addListener(marker, 'click', function () {
-			infowindow.open(map, marker);
+			infowindow.open(eventMap, marker);
+		});
+	});
+
+	breweryData.forEach(function addBreweryMarkers(r) {
+		var marker = new MarkerWithLabel({
+			position: new google.maps.LatLng(r.loc[0], r.loc[1]),
+			draggable: false,
+			raiseOnDrag: false,
+			icon: ' ',
+			map: beerMap,
+			labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
+			labelAnchor: new google.maps.Point(29, 10),
+			labelClass: "labels" // the CSS class for the label
+		});
+		var infowindow = new google.maps.InfoWindow({
+			content: r.name
+		});
+		google.maps.event.addListener(marker, 'click', function () {
+			infowindow.open(eventMap, marker);
 		});
 	});
 
@@ -388,11 +489,11 @@ google.maps.event.addListener(marker2, 'click', function() {
 
 	//ON BOUND EVENTS AND WINDOW RESIZE
 	//=======================================================================================
-	google.maps.event.addListener(map, 'bounds_changed', function () {
+	google.maps.event.addListener(eventMap, 'bounds_changed', function () {
 		if (is_windowresize) {
 			//map.setCenter(marker.getPosition());
 			window.setTimeout(function () {
-				map.panTo(marker1.getPosition());
+				eventMap.panTo(marker1.getPosition());
 			}, 500);
 		}
 		is_windowresize = false;
