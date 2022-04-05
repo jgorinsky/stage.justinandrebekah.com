@@ -283,10 +283,9 @@ $(window).resize(function () {
 	is_windowresize = true;
 });
 
-
 //INITIALIZE MAP
-function initialize() {
-
+function initGoogleMap() {
+	
 	//DEFINE MAP OPTIONS
 	//=======================================================================================
 	var mapOptions = {
@@ -308,6 +307,25 @@ function initialize() {
 	var eventMapCanvas = document.getElementById('map-canvas');
 	if (!!eventMapCanvas) {
 		var eventMap = new google.maps.Map(eventMapCanvas, mapOptions);
+		restaurantData.forEach(function addRestaurantMarkers(r) {
+			var marker = new markerWithLabel.MarkerWithLabel({
+				position: new google.maps.LatLng(r.loc[0], r.loc[1]),
+				draggable: false,
+				raiseOnDrag: false,
+				icon: ' ',
+				map: eventMap,
+				labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
+				labelAnchor: new google.maps.Point(-21, 3),
+				labelClass: "labels" // the CSS class for the label
+			});
+			var infowindow = new google.maps.InfoWindow({
+				content: r.name
+			});
+			google.maps.event.addListener(marker, 'click', function () {
+				infowindow.setPosition(this.getPosition());
+				infowindow.open(eventMap);
+			});
+		});
 	}
 	
 
@@ -316,6 +334,25 @@ function initialize() {
 	var poiMapCanvas = document.getElementById('poi-map-canvas');
 	if (!!poiMapCanvas) {
 		var poiMap = new google.maps.Map(poiMapCanvas, mapOptions);
+		poiData.forEach(function addPoiMarkers(r) {
+			var marker = new markerWithLabel.MarkerWithLabel({
+				position: new google.maps.LatLng(r.loc[0], r.loc[1]),
+				draggable: false,
+				raiseOnDrag: false,
+				icon: ' ',
+				map: poiMap,
+				labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
+				labelAnchor: new google.maps.Point(0, 0),
+				labelClass: "labels" // the CSS class for the label
+			});
+			var infowindow = new google.maps.InfoWindow({
+				content: r.name
+			});
+			google.maps.event.addListener(marker, 'click', function () {
+				infowindow.setPosition(this.getPosition());
+				infowindow.open(poiMap);
+			});
+		});
 	}
 
 	mapOptions.center = new google.maps.LatLng(38.6166104186062, -90.23929274614613);
@@ -323,6 +360,25 @@ function initialize() {
 	var beerMapCanvas = document.getElementById('beer-map-canvas');
 	if (!!poiMapCanvas) {
 		var beerMap = new google.maps.Map(beerMapCanvas, mapOptions);
+		breweryData.forEach(function addBreweryMarkers(r) {
+			var marker = new markerWithLabel.MarkerWithLabel({
+				position: new google.maps.LatLng(r.loc[0], r.loc[1]),
+				draggable: false,
+				raiseOnDrag: false,
+				icon: ' ',
+				map: beerMap,
+				labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
+				labelAnchor: new google.maps.Point(-21, 3),
+				labelClass: "labels" // the CSS class for the label
+			});
+			var infowindow = new google.maps.InfoWindow({
+				content: r.name
+			});
+			google.maps.event.addListener(marker, 'click', function () {
+				infowindow.setPosition(this.getPosition());
+				infowindow.open(eventMap);
+			});
+		});
 	}
 	
 
@@ -332,6 +388,25 @@ function initialize() {
 	var whenWhereMapCanvas = document.getElementById('where-map-canvas');
 	if (!!whenWhereMapCanvas) {
 		var whenWhereMap = new google.maps.Map(whenWhereMapCanvas, mapOptions);
+		eventData.forEach(function addEventMarkers(r) {
+			var marker = new markerWithLabel.MarkerWithLabel({
+				position: new google.maps.LatLng(r.loc[0], r.loc[1]),
+				draggable: false,
+				raiseOnDrag: false,
+				icon: ' ',
+				map: whenWhereMap,
+				labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
+				labelAnchor: new google.maps.Point(-21, 3),
+				labelClass: "labels" // the CSS class for the label
+			});
+			var infowindow = new google.maps.InfoWindow({
+				content: r.name
+			});
+			google.maps.event.addListener(marker, 'click', function () {
+				infowindow.setPosition(this.getPosition());
+				infowindow.open(whenWhereMap);
+			});
+		});
 	}
 	
 
@@ -358,102 +433,32 @@ var marker1 = new google.maps.Marker({
 	//ADD NEW MARKER WITH LABEL
 	//=======================================================================================
 
-	restaurantData.forEach(function addRestaurantMarkers(r) {
-		var marker = new MarkerWithLabel({
-			position: new google.maps.LatLng(r.loc[0], r.loc[1]),
-			draggable: false,
-			raiseOnDrag: false,
-			icon: ' ',
-			map: eventMap,
-			labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
-			labelAnchor: new google.maps.Point(29, 10),
-			labelClass: "labels" // the CSS class for the label
-		});
-		var infowindow = new google.maps.InfoWindow({
-			content: r.name
-		});
-		google.maps.event.addListener(marker, 'click', function () {
-			infowindow.open(eventMap, marker);
-		});
-	});
 
-	breweryData.forEach(function addBreweryMarkers(r) {
-		var marker = new MarkerWithLabel({
-			position: new google.maps.LatLng(r.loc[0], r.loc[1]),
-			draggable: false,
-			raiseOnDrag: false,
-			icon: ' ',
-			map: beerMap,
-			labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
-			labelAnchor: new google.maps.Point(29, 10),
-			labelClass: "labels" // the CSS class for the label
-		});
-		var infowindow = new google.maps.InfoWindow({
-			content: r.name
-		});
-		google.maps.event.addListener(marker, 'click', function () {
-			infowindow.open(eventMap, marker);
-		});
-	});
 
-	poiData.forEach(function addPoiMarkers(r) {
-		var marker = new MarkerWithLabel({
-			position: new google.maps.LatLng(r.loc[0], r.loc[1]),
-			draggable: false,
-			raiseOnDrag: false,
-			icon: ' ',
-			map: poiMap,
-			labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
-			labelAnchor: new google.maps.Point(29, 10),
-			labelClass: "labels" // the CSS class for the label
-		});
-		var infowindow = new google.maps.InfoWindow({
-			content: r.name
-		});
-		google.maps.event.addListener(marker, 'click', function () {
-			infowindow.open(poiMap, marker);
-		});
-	});
 
-	eventData.forEach(function addEventMarkers(r) {
-		var marker = new MarkerWithLabel({
-			position: new google.maps.LatLng(r.loc[0], r.loc[1]),
-			draggable: false,
-			raiseOnDrag: false,
-			icon: ' ',
-			map: whenWhereMap,
-			labelContent: `<div class="de-icon circle small-size" style="background-color:#FFF; border:1px solid #f0394d"><i class="${r.icon}" style="color:${r.color}"></i></div>`,
-			labelAnchor: new google.maps.Point(29, 10),
-			labelClass: "labels" // the CSS class for the label
-		});
-		var infowindow = new google.maps.InfoWindow({
-			content: r.name
-		});
-		google.maps.event.addListener(marker, 'click', function () {
-			infowindow.open(whenWhereMap, marker);
-		});
-	});
+
+
 
 	//marker.setMap( map );
 
 
 	//INFO WINDOWS
 	//=======================================================================================
-	var contentString = '<div>' +
-		'WEDDING CEREMONY';
-	'</div>';
+	// var contentString = '<div>' +
+	// 	'WEDDING CEREMONY';
+	// '</div>';
 
-	var contentString1 = '<div>' +
-		'WEDDING PARTY';
-	'</div>';
+	// var contentString1 = '<div>' +
+	// 	'WEDDING PARTY';
+	// '</div>';
 
-	var infowindow = new google.maps.InfoWindow({
-		content: contentString
-	});
+	// var infowindow = new google.maps.InfoWindow({
+	// 	content: contentString
+	// });
 
-	var infowindow1 = new google.maps.InfoWindow({
-		content: contentString1
-	});
+	// var infowindow1 = new google.maps.InfoWindow({
+	// 	content: contentString1
+	// });
 
 
 
@@ -489,18 +494,18 @@ google.maps.event.addListener(marker2, 'click', function() {
 
 	//ON BOUND EVENTS AND WINDOW RESIZE
 	//=======================================================================================
-	google.maps.event.addListener(eventMap, 'bounds_changed', function () {
-		if (is_windowresize) {
-			//map.setCenter(marker.getPosition());
-			window.setTimeout(function () {
-				eventMap.panTo(marker1.getPosition());
-			}, 500);
-		}
-		is_windowresize = false;
-	});
+	// google.maps.event.addListener(eventMap, 'bounds_changed', function () {
+	// 	if (is_windowresize) {
+	// 		//map.setCenter(marker.getPosition());
+	// 		window.setTimeout(function () {
+	// 			eventMap.panTo(marker1.getPosition());
+	// 		}, 500);
+	// 	}
+	// 	is_windowresize = false;
+	// });
 }
 
 // LOAD GMAP
-google.maps.event.addDomListener(window, 'load', initialize);
+// google.maps.event.addDomListener(window, 'load', initialize);
 
 
