@@ -1,18 +1,1 @@
-	'use strict';
-	
-	// MAIN SLIDER-FLEXSLIDER
-	//==================================================================================
-	$(window).load(function() {
-		$('#main-slider.flexslider').flexslider(
-		{
-			animation : "slide",
-			controlNav: false,
-			directionNav: true,
-			slideshowSpeed: 5000,  
-			animationSpeed:1000,
-			pauseOnAction: false,
-			animationLoop: true, 
-			pauseOnHover: true,			
-		});
-	});
-	
+"use strict";$(window).load((function(){$("#main-slider.flexslider").flexslider({animation:"slide",controlNav:!1,directionNav:!0,slideshowSpeed:5e3,animationSpeed:1e3,pauseOnAction:!1,animationLoop:!0,pauseOnHover:!0})}));
